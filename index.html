@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>App Pandas</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  background: #333;
+}
+
+.tab {
+  padding: 14px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #555;
+}
+
+.content {
+  display: none;
+  padding: 20px;
+}
+
+.content.active {
+  display: block;
+}
+
+button {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+  overflow-x: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="openTab(0)">Código 1</div>
+  <div class="tab" onclick="openTab(1)">Código 2</div>
+</div>
+
+<div class="content active" id="tab1">
+  <h2>Procesamiento de Productos</h2>
+  <button onclick="runCode1()">Ejecutar</button>
+  <pre id="output1"></pre>
+</div>
+
+<div class="content" id="tab2">
+  <h2>Análisis de Ventas</h2>
+  <button onclick="runCode2()">Ejecutar</button>
+  <pre id="output2"></pre>
+</div>
+
+<script>
+function openTab(index) {
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.content');
+
+  tabs.forEach(t => t.classList.remove('active'));
+  contents.forEach(c => c.classList.remove('active'));
+
+  tabs[index].classList.add('active');
+  contents[index].classList.add('active');
+}
+
+function runCode1() {
+  let data = [
+    {Producto: "Laptop", Precio:15000, Cantidad:10, Descuento:0.10},
+    {Producto: "Mouse", Precio:350, Cantidad:150, Descuento:0.05},
+    {Producto: "Teclado", Precio:800, Cantidad:80, Descuento:0.08},
+    {Producto: "Monitor", Precio:5200, Cantidad:25, Descuento:0.012}
+  ];
+
+  data.forEach(r => {
+    r.Ingreso = r.Precio * r.Cantidad;
+    r.Monto_Desc = r.Precio * r.Descuento;
+    r.Precio_Final = r.Precio - r.Monto_Desc;
+    r.Ingreso_Neto = r.Ingreso * (1 - r.Descuento);
+    r.IVA = r.Ingreso_Neto * 0.16;
+    r.Total = r.Ingreso_Neto + r.IVA;
+  });
+
+  document.getElementById("output1").textContent = JSON.stringify(data, null, 2);
+}
+
+function runCode2() {
+  let data = [
+    {Vendedor:"Ana", Meta:120, Ventas:110, Gasto:40, Limite:50, Devol:5, Comision:0.10},
+    {Vendedor:"Luis", Meta:100, Ventas:95, Gasto:30, Limite:40, Devol:12, Comision:0.08},
+    {Vendedor:"María", Meta:150, Ventas:155, Gasto:70, Limite:80, Devol:3, Comision:0.12},
+    {Vendedor:"Carlos", Meta:120, Ventas:118, Gasto:55, Limite:50, Devol:8, Comision:0.09},
+    {Vendedor:"Sofía", Meta:130, Ventas:128, Gasto:45, Limite:60, Devol:2, Comision:0.11},
+    {Vendedor:"Pedro", Meta:80, Ventas:85, Gasto:35, Limite:40, Devol:15, Comision:0.07},
+    {Vendedor:"Laura", Meta:160, Ventas:162, Gasto:65, Limite:70, Devol:4, Comision:0.12},
+    {Vendedor:"Diego", Meta:100, Ventas:98, Gasto:50, Limite:55, Devol:10, Comision:0.10}
+  ];
+
+  let filtrados = data.filter(r => r.Ventas > 100);
+
+  document.getElementById("output2").textContent = JSON.stringify(filtrados, null, 2);
+}
+</script>
+
+</body>
+</html>
